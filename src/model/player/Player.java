@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private String name;
-    private Colour colour;
+    private final String name;
+    private final Colour colour;
     private ArrayList<Card> hand;
     private ArrayList<Marble> marbles;
     private Card selectedCard;
-    private ArrayList<Marble> selectedMarbles;
+    private final ArrayList<Marble> selectedMarbles;
 
     public Player(String name, Colour colour) {
         this.name = name;

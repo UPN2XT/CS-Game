@@ -8,7 +8,7 @@ public class Cell {
     private CellType cellType;
     private boolean trap;
 
-    Cell(CellType cellType) {
+    public Cell(CellType cellType) {
         this.cellType = cellType;
         this.trap = false;
         this.marble = null;

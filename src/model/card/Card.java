@@ -3,7 +3,7 @@ package model.card;
 import engine.board.BoardManager;
 import engine.GameManager;
 
-public class Card {
+public abstract class Card {
     private final String name;
     private final String description;
     protected BoardManager boardManager;

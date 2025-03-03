@@ -1,6 +1,7 @@
 package engine;
 
 import engine.board.Board;
+import engine.board.BoardManager;
 import model.Colour;
 import model.card.Deck;
 import model.player.CPU;
