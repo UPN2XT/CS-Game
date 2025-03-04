@@ -29,8 +29,8 @@ public class Game implements GameManager {
         players.add(new Player(playerName, colours.getFirst()));
         for (int i = 1; i < 4; i++)
             players.add(new CPU("CPU " + i, colours.get(i), board));
-        for (Player player : players)
-            player.setHand(Deck.drawCards());
+        for (int i = 0; i < 4; i++)
+            players.get(i).setHand(Deck.drawCards());
     }
 
     private ArrayList<Colour> createColourList() {
