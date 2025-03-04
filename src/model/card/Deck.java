@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class Deck {
 
     private static final String CARDS_FILE = "Cards.csv";
-    private static ArrayList<Card> cardsPool = new ArrayList<>(); /* TODO verify this */
+    private static ArrayList<Card> cardsPool; /* TODO verify this */
 
 
     public static void loadCardPool(BoardManager boardManager, GameManager gameManager)
@@ -37,21 +37,44 @@ public class Deck {
                 int id = Integer.parseInt(tokens[0]);
                 int freq = Integer.parseInt(tokens[1]);
                 for (int i = 0; i < freq; i++) {
-                    Card temp = switch (id) {
-                        case 0 ->
-                                new Standard(tokens[2], tokens[3], Integer.parseInt(tokens[4]), Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 1 -> new Ace(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 4 -> new Four(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 5 -> new Five(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 7 -> new Seven(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 10 -> new Ten(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 11 -> new Jack(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 12 -> new Queen(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 13 -> new King(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                        case 14 -> new Burner(tokens[2], tokens[3], boardManager, gameManager);
-                        case 15 -> new Saver(tokens[2], tokens[3], boardManager, gameManager);
-                        default -> throw  new IOException("Failed to load the card pool from the specified file.");
-                    };
+                	Card temp;
+                	switch (id) {
+                	    case 0:
+                	        temp = new Standard(tokens[2], tokens[3], Integer.parseInt(tokens[4]), Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 1:
+                	        temp = new Ace(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 4:
+                	        temp = new Four(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 5:
+                	        temp = new Five(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 7:
+                	        temp = new Seven(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 10:
+                	        temp = new Ten(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 11:
+                	        temp = new Jack(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 12:
+                	        temp = new Queen(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 13:
+                	        temp = new King(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                	        break;
+                	    case 14:
+                	        temp = new Burner(tokens[2], tokens[3], boardManager, gameManager);
+                	        break;
+                	    case 15:
+                	        temp = new Saver(tokens[2], tokens[3], boardManager, gameManager);
+                	        break;
+                	    default:
+                	        throw new IOException("Failed to load the card pool from the specified file.");
+                	}
                     cardsPool.add(temp);
                 }
             }
@@ -74,7 +97,7 @@ public class Deck {
         ArrayList<Card> drawnCards = new ArrayList<>();
         Collections.shuffle(cardsPool);
         for (int i = 0; i < 4 && !cardsPool.isEmpty(); i++)
-            drawnCards.add(cardsPool.removeFirst());
+            drawnCards.add(cardsPool.remove(0));
 
         return drawnCards;
     }

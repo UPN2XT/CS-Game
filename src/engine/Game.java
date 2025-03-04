@@ -1,7 +1,6 @@
 package engine;
 
 import engine.board.Board;
-import engine.board.BoardManager;
 import model.Colour;
 import model.card.Deck;
 import model.player.CPU;
@@ -26,7 +25,7 @@ public class Game implements GameManager {
         turn = 0;
         board = new Board(colours, this);
         Deck.loadCardPool(board, this);
-        players.add(new Player(playerName, colours.getFirst()));
+        players.add(new Player(playerName, colours.get(0)));
         for (int i = 1; i < 4; i++)
             players.add(new CPU("CPU " + i, colours.get(i), board));
         for (int i = 0; i < 4; i++)
