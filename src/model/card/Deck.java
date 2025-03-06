@@ -14,13 +14,22 @@ import model.card.standard.Suit;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
-
+/**
+ * The Deck class represents a collection of playing cards.
+ * It provides methods to load cards from a file, print card details, and draw cards.
+ */
 public class Deck {
 
     private static final String CARDS_FILE = "Cards.csv";
     private static ArrayList<Card> cardsPool; /* TODO verify this */
 
-
+    /**
+     * Loads the card pool from a CSV file.
+     *
+     * @param boardManager the board manager used by the cards
+     * @param gameManager  the game manager used by the cards
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public static void loadCardPool(BoardManager boardManager, GameManager gameManager)
             throws IOException {
         // open csv file
@@ -37,44 +46,44 @@ public class Deck {
                 int id = Integer.parseInt(tokens[0]);
                 int freq = Integer.parseInt(tokens[1]);
                 for (int i = 0; i < freq; i++) {
-                	Card temp;
-                	switch (id) {
-                	    case 0:
-                	        temp = new Standard(tokens[2], tokens[3], Integer.parseInt(tokens[4]), Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 1:
-                	        temp = new Ace(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 4:
-                	        temp = new Four(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 5:
-                	        temp = new Five(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 7:
-                	        temp = new Seven(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 10:
-                	        temp = new Ten(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 11:
-                	        temp = new Jack(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 12:
-                	        temp = new Queen(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 13:
-                	        temp = new King(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
-                	        break;
-                	    case 14:
-                	        temp = new Burner(tokens[2], tokens[3], boardManager, gameManager);
-                	        break;
-                	    case 15:
-                	        temp = new Saver(tokens[2], tokens[3], boardManager, gameManager);
-                	        break;
-                	    default:
-                	        throw new IOException("Failed to load the card pool from the specified file.");
-                	}
+                    Card temp;
+                    switch (id) {
+                        case 0:
+                            temp = new Standard(tokens[2], tokens[3], Integer.parseInt(tokens[4]), Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 1:
+                            temp = new Ace(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 4:
+                            temp = new Four(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 5:
+                            temp = new Five(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 7:
+                            temp = new Seven(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 10:
+                            temp = new Ten(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 11:
+                            temp = new Jack(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 12:
+                            temp = new Queen(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 13:
+                            temp = new King(tokens[2], tokens[3], Suit.valueOf(tokens[5]), boardManager, gameManager);
+                            break;
+                        case 14:
+                            temp = new Burner(tokens[2], tokens[3], boardManager, gameManager);
+                            break;
+                        case 15:
+                            temp = new Saver(tokens[2], tokens[3], boardManager, gameManager);
+                            break;
+                        default:
+                            throw new IOException("Failed to load the card pool from the specified file.");
+                    }
                     cardsPool.add(temp);
                 }
             }
@@ -83,16 +92,11 @@ public class Deck {
         }
     }
 
-    public static void printCardName(Card card) {
-        System.out.println(card.getName());
-        System.out.println(card.getDescription());
-        String name = card.getName();
-        if (!name.equals("MarbleSaver") && !name.equals("MarbleBurner")) {
-            System.out.println(((Standard) card).getSuit());
-        }
-        System.out.println("-----");
-    }
-
+    /**
+     * Draws a specified number of cards from the card pool.
+     *
+     * @return a list of drawn cards
+     */
     public static ArrayList<Card> drawCards() {
         ArrayList<Card> drawnCards = new ArrayList<>();
         Collections.shuffle(cardsPool);

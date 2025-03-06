@@ -10,6 +10,9 @@ import model.card.Card;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * The Game class implements the GameManager interface and represents the main game logic.
+ */
 public class Game implements GameManager {
     private final Board board;
     private final ArrayList<Player> players;
@@ -17,7 +20,14 @@ public class Game implements GameManager {
     private int currentPlayerIndex;
     private int turn;
 
+    /**
+     * Constructs a new Game instance.
+     *
+     * @param playerName the name of the human player
+     * @throws IOException if there is an error loading the card pool
+     */
     public Game(String playerName) throws IOException {
+        // init vars
         ArrayList<Colour> colours = createColourList();
         firePit = new ArrayList<>();
         players = new ArrayList<>();
@@ -25,6 +35,7 @@ public class Game implements GameManager {
         turn = 0;
         board = new Board(colours, this);
         Deck.loadCardPool(board, this);
+        // create players
         players.add(new Player(playerName, colours.get(0)));
         for (int i = 1; i < 4; i++)
             players.add(new CPU("CPU " + i, colours.get(i), board));
@@ -32,6 +43,11 @@ public class Game implements GameManager {
             players.get(i).setHand(Deck.drawCards());
     }
 
+    /**
+     * Shuffles the colours and returns them in an ArrayList.
+     *
+     * @return an ArrayList of shuffled colours
+     */
     private ArrayList<Colour> createColourList() {
         ArrayList<Colour> colours = new ArrayList<>();
         colours.add(Colour.RED);
@@ -42,16 +58,32 @@ public class Game implements GameManager {
         return colours;
     }
 
+    // getter methods
+
+    /**
+     * Gets the game board.
+     *
+     * @return the game board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Gets the list of players.
+     *
+     * @return an ArrayList of players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Gets the fire pit cards.
+     *
+     * @return an ArrayList of cards in the fire pit
+     */
     public ArrayList<Card> getFirePit() {
         return firePit;
     }
-
 }

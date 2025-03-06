@@ -1,0 +1,52 @@
+>> change the line.split so it can handle the spliting of csv files lines where data is sperated by , but if there a string represented by "something" all, in it should be included as one part of the string no seprated
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class Deck {
+    // ... other code ...
+
+    public static void loadCardPool(BoardManager boardManager, GameManager gameManager)
+            throws IOException {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(CARDS_FILE));
+            Pattern pattern = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+            for (String line : lines) {
+                // Split preserving quoted strings
+                String[] tokens = pattern.split(line);
+                // Remove quotes and trim
+                for (int i = 0; i < tokens.length; i++) {
+                    tokens[i] = tokens[i].trim().replaceAll("^\"|\"$", "");
+                }
+
+                int id = Integer.parseInt(tokens[0]);
+                int freq = Integer.parseInt(tokens[1]);
+                // Rest of the switch statement remains the same
+                // ...
+            }
+        } catch (IOException e) {
+            throw new IOException("Failed to load the card pool from the specified file.", e);
+        }
+    }
+    // ... other code ...
+}
+>> the output should remove the "" only give me the changed regex
+Pattern pattern = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+String[] tokens = pattern.split(line);
+for (int i = 0; i < tokens.length; i++) {
+    tokens[i] = tokens[i].trim().replaceAll("^\"|\"$", "");
+}
+
+/*
+    most of the commands were to Github copilot inline & intelj assitant so there is no logs
+    for what other parts where built by AI replicating Standard cards subclasses,
+    and error handling classes
+*/
+
+/*
+    all of the code base is documented with github copilot
+*/
+
+/*
+    models used: gpt: 4o, sonnet 3.5, sonnet 3.7, o3 mini
+*/
