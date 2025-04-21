@@ -2,6 +2,11 @@ package model.card;
 
 import engine.board.BoardManager;
 import engine.GameManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
+import model.player.Marble;
+
+import java.util.ArrayList;
 
 /**
  * The Card class represents an abstract playing card.
@@ -45,4 +50,26 @@ public abstract class Card {
     public String getDescription() {
         return description;
     }
+
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.size() == 1;
+    }
+
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        return marbles.get(0).getColour() == gameManager.getActivePlayerColour();
+    }
+
+    public void basicValidate(ArrayList<Marble> marbles) throws ActionException,
+            InvalidMarbleException {
+        if (!validateMarbleSize(marbles)) {
+            throw new InvalidMarbleException("Invalid marble size");
+        }
+        if (!validateMarbleColours(marbles)) {
+            throw new InvalidMarbleException("Invalid marble colour");
+        }
+    }
+
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException,
+            InvalidMarbleException;
+
 }

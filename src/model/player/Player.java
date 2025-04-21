@@ -1,5 +1,9 @@
 package model.player;
 
+import engine.GameManager;
+import exception.GameException;
+import exception.InvalidCardException;
+import exception.InvalidMarbleException;
 import model.Colour;
 import model.card.Card;
 
@@ -88,6 +92,41 @@ public class Player {
      */
     public void setHand(ArrayList<Card> hand) {
         this.hand = hand;
+    }
+
+    public void regainMarble(Marble marble) {
+        marbles.add(marble);
+    }
+
+    public Marble getOneMarble() {
+        if (!marbles.isEmpty())
+            return marbles.get(0);
+        return null;
+    }
+
+    public void selectCard(Card card) throws InvalidCardException {
+        if (!hand.contains(card)) {
+            throw new InvalidCardException("Card not in hand");
+        }
+        selectedCard = card;
+    }
+
+    public void selectMarble(Marble marble) throws InvalidMarbleException {
+        if (marbles.size() == 2)
+            throw new InvalidMarbleException("You can only select upto 2 marbles");
+        if (!selectedMarbles.contains(marble))
+            selectedMarbles.add(marble);
+    }
+
+    public void deselectAll() {
+        selectedCard = null;
+        selectedMarbles.clear();
+    }
+
+    public void play() throws GameException {
+        if (selectedCard == null)
+            throw new InvalidCardException("You must select a card first");
+        selectedCard.act(selectedMarbles);
     }
 
 }

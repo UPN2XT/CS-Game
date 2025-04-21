@@ -2,6 +2,9 @@ package model.card.standard;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import model.player.Marble;
+
+import java.util.ArrayList;
 
 /**
  * The Five class represents a standard playing card with rank 5.
@@ -19,5 +22,9 @@ public class Five extends Standard {
      */
     public Five(String name, String description, Suit suit, BoardManager boardManager, GameManager gameManager) {
         super(name, description, 5, suit, boardManager, gameManager);
+    }
+
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        return true;
     }
 }

@@ -38,9 +38,11 @@ for (int i = 0; i < tokens.length; i++) {
 }
 
 /*
-    most of the commands were to Github copilot inline & intelj assitant so there is no logs
-    for what other parts where built by AI replicating Standard cards subclasses,
+    most of the commands were to Github copilot inline so there is no logs
+    for what exact parts where built by AI: replicating Standard cards subclasses,
     and error handling classes
+	command:
+		given the following class (Ace/error) replicate it given the following (PDF description)
 */
 
 /*
@@ -48,5 +50,5 @@ for (int i = 0; i < tokens.length; i++) {
 */
 
 /*
-    models used: gpt: 4o, sonnet 3.5, sonnet 3.7, o3 mini
+    models used: gpt 4o, sonnet 3.5, sonnet 3.7, o3 mini
 */

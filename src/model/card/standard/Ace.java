@@ -1,7 +1,15 @@
 package model.card.standard;
 
+import engine.Game;
 import engine.GameManager;
+import engine.board.Board;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
+import model.player.Marble;
+import model.player.Player;
+
+import java.util.ArrayList;
 
 /**
  * The Ace class represents a standard playing card with rank 1.
@@ -20,4 +28,18 @@ public class Ace extends Standard {
     public Ace(String name, String description, Suit suit, BoardManager boardManager, GameManager gameManager) {
         super(name, description, 1, suit, boardManager, gameManager);
     }
+
+    public void act(ArrayList<Marble> marbles) throws ActionException,
+            InvalidMarbleException {
+        customActA(marbles, false);
+    }
+
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return validateMarbleSizeMultiAction(marbles,0,1);
+    }
+
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        return validateMarbleColoursMultiAction0Or1(marbles);
+    }
+
 }

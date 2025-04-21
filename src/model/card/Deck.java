@@ -106,4 +106,12 @@ public class Deck {
         return drawnCards;
     }
 
+    public static void refillPool(ArrayList<Card> cards) {
+        cardsPool.addAll(cards);
+    }
+
+    public static int getPoolSize() {
+        return cardsPool.size();
+    }
+
 }

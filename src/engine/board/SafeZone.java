@@ -31,6 +31,15 @@ public class SafeZone {
         return colour;
     }
 
+    public boolean isFull() {
+        for (Cell cell : cells) {
+            if (cell.getMarble() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Gets the cells in the safe zone.
      *
