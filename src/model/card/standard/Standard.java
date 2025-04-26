@@ -57,19 +57,14 @@ public class Standard extends Card {
     }
 
     protected void move(ArrayList<Marble> marbles, boolean des) throws ActionException {
-        boardManager.moveBy(marbles.get(0), rank, des);
+        boardManager.moveBy(marbles.get(0), rank == 4? -4: rank, des);
     }
 
     protected void customActA(ArrayList<Marble> marbles, boolean des) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
         ArrayList<Player> players = (((Game)gameManager).getPlayers());
         if (marbles.isEmpty()) gameManager.fieldMarble();
         else move(marbles, des);
-    }
-
-    protected boolean validateMarbleColoursMultiAction0Or1(ArrayList<Marble> marbles) {
-        return marbles.isEmpty() || marbles.get(0).getColour() == gameManager.getActivePlayerColour();
     }
 
     protected boolean validateMarbleSizeMultiAction(ArrayList<Marble> marbles, int a0, int a1) {
@@ -78,7 +73,6 @@ public class Standard extends Card {
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-       basicValidate(marbles);
        move(marbles, false);
     }
 }

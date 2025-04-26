@@ -4,6 +4,7 @@ import engine.board.BoardManager;
 import engine.GameManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.card.standard.Seven;
 import model.player.Marble;
 
 import java.util.ArrayList;
@@ -56,7 +57,18 @@ public abstract class Card {
     }
 
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        return marbles.get(0).getColour() == gameManager.getActivePlayerColour();
+        int s = marbles.size();
+        if (s == 0)
+            return true;
+        else if (s == 1)
+            return marbles.get(0).getColour() == gameManager.getActivePlayerColour();
+        if (this instanceof Seven) {
+            return marbles.get(0).getColour() == gameManager.getActivePlayerColour()
+                    && marbles.get(1).getColour() == gameManager.getActivePlayerColour();
+        }
+        if (marbles.get(0).getColour() == gameManager.getActivePlayerColour())
+            return marbles.get(1).getColour() != gameManager.getActivePlayerColour();
+        return marbles.get(1).getColour() == gameManager.getActivePlayerColour();
     }
 
     public void basicValidate(ArrayList<Marble> marbles) throws ActionException,
@@ -64,6 +76,7 @@ public abstract class Card {
         if (!validateMarbleSize(marbles)) {
             throw new InvalidMarbleException("Invalid marble size");
         }
+
         if (!validateMarbleColours(marbles)) {
             throw new InvalidMarbleException("Invalid marble colour");
         }

@@ -38,8 +38,6 @@ public class Ace extends Standard {
         return validateMarbleSizeMultiAction(marbles,0,1);
     }
 
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        return validateMarbleColoursMultiAction0Or1(marbles);
-    }
+
 
 }

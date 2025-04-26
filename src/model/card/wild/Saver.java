@@ -27,7 +27,6 @@ public class Saver extends Wild {
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
         boardManager.sendToSafe(marbles.get(0));
     }
 }

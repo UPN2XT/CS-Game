@@ -34,10 +34,6 @@ public class King extends Standard {
     }
 
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        return validateMarbleSizeMultiAction(marbles,0,1);
-    }
-
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        return validateMarbleColoursMultiAction0Or1(marbles);
+        return validateMarbleSizeMultiAction(marbles, 0, 1);
     }
 }

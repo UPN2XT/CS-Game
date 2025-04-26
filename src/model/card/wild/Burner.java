@@ -31,7 +31,7 @@ public class Burner extends Wild {
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
+
         boardManager.destroyMarble(marbles.get(0));
     }
 }

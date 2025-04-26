@@ -141,7 +141,7 @@ public class Game implements GameManager {
         if (p == null) return;
         if (p.getHand().isEmpty())
             throw new CannotDiscardException("No cards to discard");
-        Card card = p.getHand().get(0);
+        Card card = p.getHand().get(rand.nextInt(p.getHand().size()));
         p.getHand().remove(card);
         firePit.add(card);
     }
@@ -149,7 +149,7 @@ public class Game implements GameManager {
     public void discardCard() throws CannotDiscardException {
         ArrayList<Player> pls = new ArrayList<>();
         for (int i = 0; i < players.size(); i++)
-            if (players.get(i).getHand().isEmpty() && i != currentPlayerIndex)
+            if (!players.get(i).getHand().isEmpty() && i != currentPlayerIndex)
                 pls.add(players.get(i));
         if (pls.isEmpty()) {
             throw new CannotDiscardException("No cards to discard");
@@ -159,7 +159,7 @@ public class Game implements GameManager {
     }
 
     public boolean canPlayTurn() {
-        return players.get(currentPlayerIndex).getHand().size() == (turn);
+        return players.get(currentPlayerIndex).getHand().size() == (4 - turn);
     }
 
     public void endPlayerTurn() {
@@ -170,14 +170,16 @@ public class Game implements GameManager {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         if (currentPlayerIndex == 0) {
             turn = (turn + 1) % 4;
-            if (turn == 0)
+            if (turn == 0) {
                 for (Player player : players) {
                     if (Deck.getPoolSize() < 4) {
                         Deck.refillPool(firePit);
                         firePit.clear();
                     }
-                    player.getHand().addAll(Deck.drawCards());
+                    player.setHand(Deck.drawCards());
+
                 }
+            }
 
         }
 

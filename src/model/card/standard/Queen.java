@@ -27,13 +27,12 @@ public class Queen extends Standard {
     }
 
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        return marbles.size() == 1 || marbles.size() == 0;
+        return marbles.size() == 1 || marbles.isEmpty();
     }
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
-        if (marbles.size() == 0) {
+        if (marbles.isEmpty()) {
             gameManager.discardCard();
         } else {
             move(marbles, false);

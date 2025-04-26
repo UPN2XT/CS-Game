@@ -112,7 +112,7 @@ public class Player {
     }
 
     public void selectMarble(Marble marble) throws InvalidMarbleException {
-        if (marbles.size() == 2)
+        if (selectedMarbles.size() >= 2)
             throw new InvalidMarbleException("You can only select upto 2 marbles");
         if (!selectedMarbles.contains(marble))
             selectedMarbles.add(marble);
@@ -126,6 +126,7 @@ public class Player {
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("You must select a card first");
+        selectedCard.basicValidate(selectedMarbles);
         selectedCard.act(selectedMarbles);
     }
 

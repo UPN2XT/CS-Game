@@ -27,20 +27,12 @@ public class Seven extends Standard {
         super(name, description, 7, suit, boardManager, gameManager);
     }
 
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        if (marbles.size() == 1)
-            return marbles.get(0).getColour() == gameManager.getActivePlayerColour();
-        if (marbles.get(0).getColour() == gameManager.getActivePlayerColour())
-            return marbles.get(1).getColour() == gameManager.getActivePlayerColour();
-        return false;
-    }
 
     public boolean validateMarbleSize(ArrayList<Marble> marbles) {
         return validateMarbleSizeMultiAction(marbles, 1, 2);
     }
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
         if (marbles.size() == 1) {
             move(marbles, false);
             return;

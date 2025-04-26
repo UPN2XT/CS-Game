@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import java.util.Random;
 
+import engine.board.Cell;
 import org.junit.Test;
 
 
@@ -7076,7 +7077,7 @@ public class Milestone2PublicTests {
 
 
 			Class<?> boardClass = Class.forName(boardPath);
-			ArrayList<Object> trackreturnValue =  (ArrayList<Object>) track_field.get(board);
+			ArrayList<Cell> trackreturnValue =  (ArrayList<Cell>) track_field.get(board);
 
 			IllegalDestroyException = Class.forName(IllegalDestroyExceptionExceptionPath);
 

@@ -39,7 +39,6 @@ public class Jack extends Standard {
     }
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-        basicValidate(marbles);
         if (marbles.size() == 2)
             boardManager.swap(marbles.get(0), marbles.get(1));
         else
