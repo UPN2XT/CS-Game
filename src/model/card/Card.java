@@ -71,16 +71,6 @@ public abstract class Card {
         return marbles.get(1).getColour() == gameManager.getActivePlayerColour();
     }
 
-    public void basicValidate(ArrayList<Marble> marbles) throws ActionException,
-            InvalidMarbleException {
-        if (!validateMarbleSize(marbles)) {
-            throw new InvalidMarbleException("Invalid marble size");
-        }
-
-        if (!validateMarbleColours(marbles)) {
-            throw new InvalidMarbleException("Invalid marble colour");
-        }
-    }
 
     public abstract void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException;

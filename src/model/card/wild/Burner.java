@@ -26,12 +26,12 @@ public class Burner extends Wild {
     }
 
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        System.out.println(marbles.get(0).getColour() != gameManager.getActivePlayerColour());
         return marbles.get(0).getColour() != gameManager.getActivePlayerColour();
     }
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-
         boardManager.destroyMarble(marbles.get(0));
     }
 }

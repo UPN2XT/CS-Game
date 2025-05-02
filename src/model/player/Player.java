@@ -1,6 +1,7 @@
 package model.player;
 
 import engine.GameManager;
+import exception.ActionException;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
@@ -18,7 +19,7 @@ public class Player {
     private final String name;
     private final Colour colour;
     private ArrayList<Card> hand;
-    private ArrayList<Marble> marbles;
+    private final ArrayList<Marble> marbles;
     private Card selectedCard;
     private final ArrayList<Marble> selectedMarbles;
 
@@ -123,10 +124,21 @@ public class Player {
         selectedMarbles.clear();
     }
 
+    public void basicValidate(ArrayList<Marble> marbles) throws ActionException,
+            InvalidMarbleException {
+        if (!selectedCard.validateMarbleSize(marbles)) {
+            throw new InvalidMarbleException("Invalid marble size");
+        }
+
+        if (!selectedCard.validateMarbleColours(marbles)) {
+            throw new InvalidMarbleException("Invalid marble colour");
+        }
+    }
+
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("You must select a card first");
-        selectedCard.basicValidate(selectedMarbles);
+        basicValidate(selectedMarbles);
         selectedCard.act(selectedMarbles);
     }
 

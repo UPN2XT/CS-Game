@@ -23,7 +23,7 @@ public class Game implements GameManager {
     private final ArrayList<Card> firePit;
     private int currentPlayerIndex;
     private int turn;
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Constructs a new Game instance.

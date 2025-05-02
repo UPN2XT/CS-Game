@@ -1,6 +1,5 @@
 package engine.board;
 
-import engine.Game;
 import engine.GameManager;
 import java.util.ArrayList;
 
@@ -10,9 +9,6 @@ import model.player.Marble;
 
 import java.util.Random;
 
-/**
- * The Board class implements the BoardManager interface and represents the game board.
- */
 public class Board implements BoardManager {
     private final GameManager gameManager;
     private final ArrayList<Cell> track;
@@ -20,12 +16,6 @@ public class Board implements BoardManager {
     private int splitDistance;
     private final Random random = new Random();
 
-    /**
-     * Constructs a new Board instance.
-     *
-     * @param colourOrder the order of colours for the safe zones
-     * @param gameManager the game manager instance
-     */
     public Board(ArrayList<Colour> colourOrder, GameManager gameManager) {
         this.gameManager = gameManager;
         this.track = new ArrayList<>();
@@ -35,25 +25,12 @@ public class Board implements BoardManager {
         initTrack();
     }
 
-    /**
-     * Initializes the safe zones with the given colour order.
-     *
-     * @param colourOrder the order of colours for the safe zones
-     */
     private void initialiseSafeZones(ArrayList<Colour> colourOrder) {
         for (Colour colour : colourOrder)
             safeZones.add(new SafeZone(colour));
     }
 
-    /**
-     * Initializes the track with cells.
-     */
     private void initTrack() {
-        /*
-         * Track can be divided into 4 parts
-         * each part has a base cell, 22 normal cells, an entry cell and a normal cell
-         * in this order we create this sequence four times for each part of the track
-         */
         for (int i = 0; i < 4; i++) {
             track.add(new Cell(CellType.BASE));
             for (int j = 0; j < 22; j++)
@@ -64,17 +41,11 @@ public class Board implements BoardManager {
         setTraps();
     }
 
-    /**
-     * Sets traps on the track.
-     */
     private void setTraps() {
         for (int i = 0; i < 8; i++)
             assignTrapCell();
     }
 
-    /**
-     * Assigns a trap to a random normal cell on the track.
-     */
     private void assignTrapCell() {
         // search for a random normal cell and assign it as a trap
         int x;
@@ -84,40 +55,19 @@ public class Board implements BoardManager {
         track.get(x).setTrap(true);
     }
 
-    // getter methods
 
-    /**
-     * Gets the track of cells.
-     *
-     * @return an ArrayList of Cell representing the track
-     */
     public ArrayList<Cell> getTrack() {
         return track;
     }
 
-    /**
-     * Gets the split distance.
-     *
-     * @return the split distance
-     */
     public int getSplitDistance() {
         return splitDistance;
     }
 
-    /**
-     * Sets the split distance.
-     *
-     * @param splitDistance the new split distance
-     */
     public void setSplitDistance(int splitDistance) {
         this.splitDistance = splitDistance;
     }
 
-    /**
-     * Gets the safe zones.
-     *
-     * @return an ArrayList of SafeZone representing the safe zones
-     */
     public ArrayList<SafeZone> getSafeZones() {
         return safeZones;
     }
@@ -156,7 +106,6 @@ public class Board implements BoardManager {
         return (i) * 25;
     }
 
-
     private int getEntryPosition(Colour colour) {
         int i = getColorPos(colour);
         if (i == -1)
@@ -192,7 +141,6 @@ public class Board implements BoardManager {
                 continue;
             }
             path.add(safe.get(z));
-
         }
         return path;
     }
@@ -211,8 +159,6 @@ public class Board implements BoardManager {
             throw new IllegalMovementException("Cannot move backwards in Safe Zone");
         boolean isMine = marble.getColour() == gameManager.getActivePlayerColour();
         int entryPos = getEntryPosition(marble.getColour());
-        System.out.println(steps);
-        System.out.println(entryPos - i);
         if (isMine) {
             if (inTrack && steps != -4 && (i+steps)>entryPos+4) {
                 throw new IllegalMovementException("Rank of card played is too high 1");
@@ -233,10 +179,7 @@ public class Board implements BoardManager {
         boolean isMine = marble.getColour() == gameManager.getActivePlayerColour();
         for (int i = 1; i < fullPath.size(); i++) {
             Cell cell = fullPath.get(i);
-            System.out.println(cell.getCellType());
-
             if (cell.getMarble() == null) continue; // free cell
-            System.out.println(getPositionInPath(track, cell.getMarble()));
             if (cell.getCellType() == CellType.SAFE) throw new IllegalMovementException("Cannot pass in safe zone"); // if you are in safe zone you can not pass
             if (!destroy) {
                 if (cell.getMarble().getColour() == gameManager.getActivePlayerColour()) // self blockage
@@ -276,7 +219,6 @@ public class Board implements BoardManager {
         Cell targetCell = fullPath.get(fullPath.size() - 1);
 
         if (targetCell.getMarble() != null) {
-            System.out.println("astra 1");
             Marble m = targetCell.getMarble();
             destroyMarble(m);
         }
@@ -284,10 +226,7 @@ public class Board implements BoardManager {
         fullPath.get(0).setMarble(null);
 
         if (targetCell.isTrap()) {
-            System.out.println("astra 2");
-            System.out.println(getPositionInPath(track, marble));
             gameManager.sendHome(marble);
-            System.out.println("astra 2+");
             fullPath.get(fullPath.size() - 1).setTrap(false);
             assignTrapCell();
             return;
@@ -302,7 +241,6 @@ public class Board implements BoardManager {
             Marble mine = marble_1.getColour() == gameManager.getActivePlayerColour() ? marble_1: marble_2;
             Marble other = mine == marble_1? marble_2: marble_1;
             int pos =  getPositionInPath(track, other);
-            System.out.println("other: "+ pos + " mine: "+ getPositionInPath(track, mine));
             if (getPositionInPath(track, mine) == -1 || pos == -1)
                 throw new IllegalSwapException("Marble not on track");
             if (pos == getBasePosition(other.getColour()))
@@ -353,8 +291,6 @@ public class Board implements BoardManager {
     }
 
     public void destroyMarble(Marble marble) throws IllegalDestroyException {
-        if (marble == null)
-            System.out.println("marble is null");
         int positionInPath = getPositionInPath(track, marble);
         validateDestroy(positionInPath);
         track.get(positionInPath).setMarble(null);
@@ -399,6 +335,7 @@ public class Board implements BoardManager {
                 break;
             }
         }
+
         for (Cell cell : safe.getCells()) {
             if (cell.getMarble() != null && cell.getMarble().getColour() == gameManager.getActivePlayerColour()) {
                 marbles.add(cell.getMarble());

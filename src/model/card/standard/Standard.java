@@ -62,7 +62,6 @@ public class Standard extends Card {
 
     protected void customActA(ArrayList<Marble> marbles, boolean des) throws ActionException,
             InvalidMarbleException {
-        ArrayList<Player> players = (((Game)gameManager).getPlayers());
         if (marbles.isEmpty()) gameManager.fieldMarble();
         else move(marbles, des);
     }

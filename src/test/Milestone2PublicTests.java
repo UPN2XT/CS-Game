@@ -7075,7 +7075,6 @@ public class Milestone2PublicTests {
 			track_field.setAccessible(true);
 			track_field.set(board, track);
 
-
 			Class<?> boardClass = Class.forName(boardPath);
 			ArrayList<Cell> trackreturnValue =  (ArrayList<Cell>) track_field.get(board);
 

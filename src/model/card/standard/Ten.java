@@ -33,7 +33,6 @@ public class Ten extends Standard {
 
     public void act(ArrayList<Marble> marbles) throws ActionException,
             InvalidMarbleException {
-
         if (marbles.isEmpty()) {
             gameManager.discardCard(gameManager.getNextPlayerColour());
         } else {
