@@ -1,13 +1,14 @@
-import engine.Game;
-import engine.GameManager;
-import model.card.Card;
-import java.io.IOException;
-import model.card.Deck;
-import model.card.standard.Standard;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import view.mainMenu.Menu;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
-
-
+public class Main extends Application {
+    public void start(Stage primaryStage) throws Exception {
+        Menu menu = new Menu(primaryStage);
+        primaryStage.setTitle("JavaFX Application");
+        primaryStage.setScene(menu.getScene());
+        primaryStage.show();
     }
+    public static void main(String[]args){
+        launch(args); }
 }

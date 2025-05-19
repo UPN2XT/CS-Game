@@ -4,5 +4,6 @@
 	<contentEntry url="file://$MODULE_DIR$"/>
 	<levels>
 		<level name="bluecatcode.junit.4.12.extended" value="project"/>
+		<level name="cedarsoft.commons.javafx" value="project"/>
 	</levels>
 </component>

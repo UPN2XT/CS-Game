@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="1060.0" layoutY="489.0" prefHeight="101.0" prefWidth="250.0" style="-fx-background-color: Black;" />
+
+      <HBox layoutX="609.0" layoutY="489.0" prefHeight="101.0" prefWidth="250.0" style="-fx-background-color: Black;" />
+      <Circle fill="DODGERBLUE" layoutX="960.0" layoutY="540.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+      <VBox layoutX="909.0" layoutY="189.0" prefHeight="250.0" prefWidth="100.0" style="-fx-background-color: Black;" />
+   </children>
+</AnchorPane>
