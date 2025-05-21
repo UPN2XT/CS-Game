@@ -86,10 +86,6 @@ public class Player {
         return selectedCard;
     }
 
-    public ArrayList<Marble> getSelectedMarbles() {
-        return selectedMarbles;
-    }
-
     /**
      * Sets the hand of cards of the player.
      *
@@ -113,10 +109,7 @@ public class Player {
         if (!hand.contains(card)) {
             throw new InvalidCardException("Card not in hand");
         }
-        if (selectedCard != card)
-            selectedCard = card;
-        else
-            selectedCard = null;
+        selectedCard = card;
     }
 
     public void selectMarble(Marble marble) throws InvalidMarbleException {
@@ -124,8 +117,6 @@ public class Player {
             throw new InvalidMarbleException("You can only select upto 2 marbles");
         if (!selectedMarbles.contains(marble))
             selectedMarbles.add(marble);
-        else
-            selectedMarbles.remove(marble);
     }
 
     public void deselectAll() {

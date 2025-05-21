@@ -7,24 +7,31 @@ import engine.board.Board;
 import engine.board.BoardManager;
 import engine.board.Cell;
 import engine.board.SafeZone;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import model.Colour;
+import model.card.Card;
+import model.card.standard.Standard;
 import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static view.game.components.Hand.getSuit;
+
 public class BoardView {
     private final VBox root;
     final Pane grid;
     final int rows = 41;
     final int cols = 41;
-    final int cellSize = 25;
+    final int cellSize = 22;
     final GameController gc;
 
     public BoardView(BoardManager bm, GameManager gm, GameController gc) throws IOException {
@@ -36,22 +43,18 @@ public class BoardView {
         y.setAlignment(Pos.CENTER);
         grid = new Pane();
         grid.setPrefSize(cols * cellSize, rows * cellSize);
-        grid.setOnMouseClicked(event -> {
-            System.out.println("Clicked on board");
-            //gc.selectMarble(null);
-        });
         y.getChildren().add(grid);
         this.gc = gc;
         initBoard(bm, gm);
     }
 
-    private void insertElement(int row, int col, Circle circle) {
-        circle.setTranslateX(col * cellSize - cellSize / 2.0);
-        circle.setTranslateY(row * cellSize - cellSize / 2.0);
-        grid.getChildren().add(circle);
+    private void insertElement(double row, int col, Node node) {
+        node.setTranslateX(col * cellSize - cellSize / 2.0);
+        node.setTranslateY(row * cellSize - cellSize);
+        grid.getChildren().add(node);
     }
 
-    private Color getColor (Colour c) {
+    public static Color getColor (Colour c) {
         Color color;
         switch (c) {
             case RED:
@@ -65,6 +68,27 @@ public class BoardView {
                 break;
             case GREEN:
                 color = Color.GREEN;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + c);
+        }
+        return color;
+    }
+
+    private Color getColorLight (Colour c) {
+        Color color;
+        switch (c) {
+            case RED:
+                color = new Color(1, 0.5, 0.5, 1);
+                break;
+            case BLUE:
+                color = Color.LIGHTBLUE;
+                break;
+            case YELLOW:
+                color = Color.LIGHTYELLOW;
+                break;
+            case GREEN:
+                color = Color.LIGHTGREEN;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + c);
@@ -93,7 +117,7 @@ public class BoardView {
         Color c = getColor(p.getColour());
         for (int i = 0; i < p.getMarbles().size(); i++) {
             Circle circle = new Circle();
-            circle.setRadius(12.5);
+            circle.setRadius(cellSize / 2.0);
             if (p.getMarbles().get(i) != null) {
                 circle.setFill(c);
                 System.out.println(p.getMarbles().get(i).toString());
@@ -121,6 +145,87 @@ public class BoardView {
         initSafeZone(true, 2,safeZones.get(3));
         initTrack(((Board) bm).getTrack());
         initHomes(((Game) gm).getPlayers());
+
+        // runic style text
+        Circle circle = new Circle();
+        circle.setRadius(cellSize*1.5);
+        circle.setFill(Color.PURPLE);
+        // shadow effect
+        circle.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.3, 0, 2);");
+        circle.setOpacity(0.5);
+        BorderPane cardBox;
+        ArrayList<Card> fire = ((Game) gm).getFirePit();
+        if (fire.isEmpty())
+            cardBox = initFireCard();
+        else {
+            cardBox = initFireCard(fire.get(fire.size() - 1));
+        }
+        insertElement(16.5,45, cardBox);
+        insertElement(21,21, circle);
+    }
+
+    private BorderPane initFireCard() {
+        BorderPane cardBox = new BorderPane();
+        cardBox.setPrefSize(154, 215.6);
+        String style =
+                "-fx-background-color: transparent; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-color: white; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-padding: 10; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.3, 0, 2);";
+        cardBox.setStyle(style);
+        Text t = new Text("Fire Pit");
+        t.setFill(Color.WHITE);
+        // size of 15 px
+        t.setStyle(
+                "-fx-font-size: 15px; -fx-font-weight: bold;"
+        );
+        cardBox.setCenter(t);
+        return cardBox;
+    }
+
+    private BorderPane initFireCard(Card card) {
+        BorderPane cardBox = new BorderPane();
+        if (card == null)
+            return initFireCard();
+        cardBox.setPrefSize(154, 215.6);
+        String style =
+                "-fx-background-color: white; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-padding: 10; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.3, 0, 2);";
+        cardBox.setStyle(style);
+        VBox top = new VBox();
+        Text id = new Text(Hand.getCardId(card.getName()));
+        VBox bottom = new VBox();
+        Text id_bt = new Text(id.getText());
+        top.setPadding(new Insets(0,0,0,10));
+        id.setStyle(
+                "-fx-font-size: 30px; -fx-font-weight: bold;"
+        );
+        top.getChildren().add(id);
+        cardBox.setTop(top);
+        if (card instanceof Standard) {
+            Text suit = new Text(String.valueOf(getSuit(((Standard) card).getSuit())));
+            suit.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+            top.getChildren().add(suit);
+            Text suit_bt = new Text(suit.getText());
+            suit_bt.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+            bottom.getChildren().add(suit_bt);
+            suit_bt.setRotate(180.0);
+        }
+        bottom.setPadding(new Insets(0,10,0,0));
+        id_bt.setStyle(
+                "-fx-font-size: 30px; -fx-font-weight: bold;"
+        );
+        id_bt.setRotate(180.0);
+        bottom.getChildren().add(id_bt);
+        bottom.setAlignment(Pos.BOTTOM_RIGHT);
+        cardBox.setBottom(bottom);
+        return cardBox;
     }
 
 
@@ -136,19 +241,21 @@ public class BoardView {
 
     private void initSafeZone(ArrayList<int[]> cellsLocations, ArrayList<Cell> cells,Colour c) {
         Color color = getColor(c);
+        Color light = getColorLight(c);
         int i = 0;
         for (int[] cellLocation : cellsLocations) {
             int row = cellLocation[0];
             int col = cellLocation[1];
             Circle circle = new Circle();
-            circle.setRadius(12.5);
+            circle.setRadius(cellSize / 2.0);
             if (cells.get(i++).getMarble() != null)
                 circle.setFill(color);
             else
                 // dont fell only the edge should have the color
             {
-                circle.setStroke(color);
-                circle.setFill(Color.TRANSPARENT);
+                //circle.setStroke(Color.PURPLE);
+                circle.setFill(light);
+                circle.setOpacity(0.7);
                 circle.setStrokeWidth(2);
             }
             insertElement(row, col, circle);
@@ -159,26 +266,34 @@ public class BoardView {
         ArrayList<int[]> cellsLocations = new ArrayList<>();
         for (int i = 0; i < 10; i++)
             cellsLocations.add(createPos(33-i, 19));
-        for (int i = 0; i < 11; i++)
-            cellsLocations.add(createPos(23, 19-i));
+        cellsLocations.add(createPos(23, 20));
+        cellsLocations.add(createPos(22, 19));
+        for (int i = 0; i < 9; i++)
+            cellsLocations.add(createPos(23, 18-i));
         for (int i = 0; i < 4; i++)
-            cellsLocations.add(createPos(23-i, 8));
-        for (int i = 0; i < 11; i++)
-            cellsLocations.add(createPos(19, 8+i));
+            cellsLocations.add(createPos(23-i, 9));
         for (int i = 0; i < 10; i++)
-            cellsLocations.add(createPos(19-i, 19));
+            cellsLocations.add(createPos(19, 9+i));
+        cellsLocations.add(createPos(20, 19));
+        cellsLocations.add(createPos(19, 20));
+        for (int i = 0; i < 9; i++)
+            cellsLocations.add(createPos(18-i, 19));
         for (int i = 0; i < 4; i++)
             cellsLocations.add(createPos(9, 19+i));
         for (int i = 0; i < 10; i++)
             cellsLocations.add(createPos(9+i, 23));
-        for (int i = 0; i < 11; i++)
-            cellsLocations.add(createPos(19, 23+i));
+        cellsLocations.add(createPos(19, 22));
+        cellsLocations.add(createPos(20, 23));
+        for (int i = 0; i < 9; i++)
+            cellsLocations.add(createPos(19, 24+i));
         for (int i = 0; i < 4; i++)
-            cellsLocations.add(createPos(19+i, 34));
-        for (int i = 0; i < 11; i++)
-            cellsLocations.add(createPos(23, 34-i));
+            cellsLocations.add(createPos(19+i, 33));
         for (int i = 0; i < 10; i++)
-            cellsLocations.add(createPos(23+i, 23));
+            cellsLocations.add(createPos(23, 33-i));
+        cellsLocations.add(createPos(22, 23));
+        cellsLocations.add(createPos(23, 22));
+        for (int i = 0; i < 9; i++)
+            cellsLocations.add(createPos(24+i, 23));
         for (int i = 0; i < 4; i++)
             cellsLocations.add(createPos(33, 23-i));
 
@@ -188,12 +303,12 @@ public class BoardView {
             int col = cellLocation[1];
             Circle circle = new Circle();
             circle.setRadius(11);
-            Color color = Color.BLACK;
+            Color color = Color.PURPLE;
             int x = j++;
             Marble m = track.get(x).getMarble();
             if (m != null) {
                 circle.setFill(getColor(m.getColour()));
-                if (gc.getGame().getPlayers().get(0).getSelectedMarbles().contains(m)) {
+                if (gc.getSelectMarbles().contains(m)) {
                     circle.setStroke(Color.ORANGE);
                     circle.setStrokeWidth(3);
                 }
@@ -204,11 +319,26 @@ public class BoardView {
                 });
             }
             else {
-                circle.setStroke(color);
-                circle.setFill(Color.TRANSPARENT);
+                if (x % 25 == 0) {
+                    circle.setFill(color);
+                    circle.setStroke(getColorLight(gc.getGame().getPlayers().get((int)(x/25)).getColour()));
+                }
+                else if ((x-23) % 25 == 0) {
+                    circle.setFill(getColorLight(gc.getGame().getPlayers().get((int) (((x - 23) / 25) + 1) % 4).getColour()));
+                    circle.setStroke(color);
+                    circle.setStrokeWidth(2);
+                }
+                else
+                    circle.setFill(color);
+                // glass like effect
+                circle.setOpacity(0.5);
+
+
+
                 circle.setStrokeWidth(2);
             }
-
+            // the circle has a glass like effect  with strong purple shadow
+            circle.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.3, 0, 2);");
             insertElement(row, col, circle);
         }
     }

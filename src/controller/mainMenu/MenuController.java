@@ -28,7 +28,7 @@ public class MenuController {
             return;
         }
         Game game = new Game(playerName.get());
-        GameScene gameScene = new GameScene(game);
+        GameScene gameScene = new GameScene(game, primaryStage);
         primaryStage.setScene(gameScene.getScene());
     }
 }
