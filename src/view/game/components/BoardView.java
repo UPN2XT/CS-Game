@@ -120,7 +120,6 @@ public class BoardView {
             circle.setRadius(cellSize / 2.0);
             if (p.getMarbles().get(i) != null) {
                 circle.setFill(c);
-                System.out.println(p.getMarbles().get(i).toString());
             }
             else
             {
@@ -155,10 +154,11 @@ public class BoardView {
         circle.setOpacity(0.5);
         BorderPane cardBox;
         ArrayList<Card> fire = ((Game) gm).getFirePit();
+        System.out.println("fire size:" + fire.size());
         if (fire.isEmpty())
             cardBox = initFireCard();
         else {
-            cardBox = initFireCard(fire.get(fire.size() - 1));
+            cardBox = initFireCard(fire.get(fire.size() - 1), fire);
         }
         insertElement(16.5,45, cardBox);
         insertElement(21,21, circle);
@@ -186,10 +186,10 @@ public class BoardView {
         return cardBox;
     }
 
-    private BorderPane initFireCard(Card card) {
+    private BorderPane initFireCard(Card card, ArrayList<Card> fire) {
         BorderPane cardBox = new BorderPane();
         if (card == null)
-            return initFireCard();
+            return fire.indexOf(card) == 0? initFireCard(): initFireCard(fire.get(fire.indexOf(card) - 1), fire);
         cardBox.setPrefSize(154, 215.6);
         String style =
                 "-fx-background-color: white; " +
@@ -248,8 +248,22 @@ public class BoardView {
             int col = cellLocation[1];
             Circle circle = new Circle();
             circle.setRadius(cellSize / 2.0);
-            if (cells.get(i++).getMarble() != null)
+            Marble m = cells.get(i++).getMarble();
+            if (m != null) {
                 circle.setFill(color);
+                if (c == gc.getGame().getPlayers().get(0).getColour()) {
+                    if (gc.getSelectMarbles().contains(m)) {
+                        circle.setStroke(Color.ORANGE);
+                        circle.setStrokeWidth(3);
+                    }
+                    circle.setFill(getColor(m.getColour()));
+
+                    circle.setOnMouseClicked(mouseEvent -> {
+                        gc.selectMarble(m);
+                    });
+                }
+
+            }
             else
                 // dont fell only the edge should have the color
             {
@@ -342,6 +356,7 @@ public class BoardView {
             insertElement(row, col, circle);
         }
     }
+
 
     private int[] createPos(int row, int col) {
         return new int[]{row, col};

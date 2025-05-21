@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import model.card.Card;
 import model.card.standard.Ace;
 import model.card.standard.King;
+import model.card.standard.Seven;
 import model.player.Marble;
 import model.player.Player;
 import view.game.GameScene;
@@ -26,6 +27,7 @@ public class GameController {
     private final Stage primaryStage;
     private Card selectedCard;
     private ArrayList<Marble> selectMarbles;
+    private boolean splited;
     public GameController(Game game, GameScene gs, Alerts alerts, Stage primaryStage) {
         // Initialize the game controller
         this.game = game;
@@ -34,6 +36,7 @@ public class GameController {
         this.primaryStage = primaryStage;
         selectedCard = null;
         selectMarbles = new ArrayList<>();
+        splited = false;
     }
 
     public void selectCard(Card card) {
@@ -64,14 +67,19 @@ public class GameController {
                        return;
                     }
                 }
-                System.out.println("No Ace or King in hand");
-                throw new CannotFieldException("Can not  with out Ace or a King!");
+                throw new CannotFieldException("Can not field without Ace or a King!");
             } catch (GameException e) {
                 alerts.displayMessage(e.getMessage());
             }
         else {
             alerts.displayMessage("Not your turn!");
         }
+    }
+
+    public void setSplitDistance(double value) {
+        game.getBoard().setSplitDistance((int) Math.round(value));
+        splited = true;
+        play();
     }
 
     private void gameLoop(boolean firstLoop) {
@@ -130,6 +138,11 @@ public class GameController {
     public void play() {
         if (selectedCard != null) {
             try {
+                if (selectedCard instanceof Seven && !splited && selectMarbles.size() == 2) {
+                    alerts.displaySetSplitDistance(this);
+                    return;
+                }
+                splited = false;
                 game.getPlayers().get(0).selectCard(selectedCard);
                 for (Marble marble : selectMarbles) {
                     game.getPlayers().get(0).selectMarble(marble);

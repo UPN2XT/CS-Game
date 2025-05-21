@@ -3,8 +3,12 @@ package view.game.components;
 import controller.game.GameController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -115,9 +119,56 @@ public class Alerts {
         btn.setOnMouseClicked(e -> gc.startnewGame());
     }
 
+    public void displaySetSplitDistance(GameController gc) {
+        root.setVisible(true);
+        Slider slider1 = new Slider();
+        slider1.setMin(1);
+        slider1.setMax(6);
+        slider1.setValue(gc.getGame().getBoard().getSplitDistance());
+        slider1.setBlockIncrement(1);
+        slider1.setMajorTickUnit(1);
+        slider1.setMinorTickCount(0);
+        slider1.setSnapToTicks(true);
+        slider1.setShowTickMarks(true);
+        slider1.setShowTickLabels(true);
+        slider1.setMaxWidth(350);
 
-    public void alert(String title, String message) {
+        // 🎨 Glass-style slider to match rest of the UI
+        slider1.setStyle(
+                // Track style
+                "-fx-control-inner-background: transparent;" +
+                        "-fx-background-color: linear-gradient(to right, rgba(180,155,204,0.5), rgba(111,86,140,0.5));" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-padding: 10;" +
 
+                        // Thumb style
+                        "-fx-thumb-fill: rgba(255,255,255,0.7);" +
+                        "-fx-thumb-radius: 12;" +
+                        "-fx-thumb-stroke: rgba(255,255,255,0.4);" +
+                        "-fx-thumb-width: 24;" +
+                        "-fx-thumb-height: 24;" +
+
+                        // Border glow style
+                        "-fx-effect: dropshadow(gaussian, rgba(128,0,255,0.4), 10, 0.3, 0, 3);"
+        );
+
+        // Optional DropShadow for consistency
+        DropShadow glow = new DropShadow();
+        glow.setRadius(10);
+        glow.setColor(Color.rgb(128, 0, 255, 0.3));
+        slider1.setEffect(glow);
+        slider1.setOpacity(0.95);
+        root.getChildren().add(1, slider1);
+        text.setText("Set split distance");
+
+        btn.setText("Play!");
+        btn.setOnMouseClicked(e -> {
+            root.getChildren().remove(slider1);
+            root.setVisible(false);
+            btn.setOnMouseClicked(e1 -> root.setVisible(false));
+            btn.setText("OK!");
+            gc.setSplitDistance(slider1.getValue());
+        });
     }
 
     public StackPane getRoot() {
